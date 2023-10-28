@@ -1,19 +1,19 @@
 package model;
 
-public abstract class Meeting {
-    String day;
-    String timeStart;
-    String timeEnd;
-    Room room;
-    boolean isMeetingAdded = false;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
-    public Meeting(String day, String timeStart, String timeEnd, Room room, boolean isMeetingAdded) {
+public abstract class Meeting {
+    LocalDate day;
+    LocalTime timeStart;
+    LocalTime timeEnd;
+    Room room;
+
+    public Meeting(LocalDate day, LocalTime timeStart, LocalTime timeEnd, Room room) {
         this.day = day;
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
         this.room = room;
-        this.isMeetingAdded = isMeetingAdded;
-        isValid();
     }
 
     protected abstract void isValid();
