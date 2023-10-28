@@ -1,7 +1,9 @@
 package model;
 
-import java.util.HashMap;
+import lombok.Getter;
 
+import java.util.HashMap;
+@Getter
 public class Room {
 
 
