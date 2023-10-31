@@ -1,8 +1,9 @@
 package implementation;
 
-public interface ScheduleImportExport<T> {
+public abstract class ScheduleImportExport<T> {
 
-    public T serialize(Object object);
+    public abstract boolean importData(String filePath, String configPath);
 
-    public T deserialize(Object object);
+    public abstract boolean exportData(String filePath);
+
 }
