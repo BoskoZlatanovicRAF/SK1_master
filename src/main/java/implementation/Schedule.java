@@ -3,11 +3,15 @@ package implementation;
 import model.Meeting;
 import model.Room;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Schedule<T> {
-
+    LocalTime timeValidFrom;
+    LocalTime timeValidTo;
+    List<LocalDate> exceptions = new ArrayList<>();
     List<Meeting> meetings = new ArrayList<>();
     List<Room> rooms = new ArrayList<>();
 
