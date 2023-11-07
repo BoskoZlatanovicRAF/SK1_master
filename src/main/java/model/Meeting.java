@@ -9,11 +9,16 @@ import java.time.LocalTime;
 import java.util.HashMap;
 
 @Getter
+@Setter
 public class Meeting {
     private LocalDateTime timeStart;
     private LocalDateTime timeEnd;
     private Room room;
     private HashMap<String, String> additionalAttributes;
+
+    public Meeting(){
+        this.additionalAttributes = new HashMap<>();
+    }
 
 
     public Meeting(LocalDateTime timeStart, LocalDateTime timeEnd, Room room) {
@@ -28,6 +33,15 @@ public class Meeting {
         this.timeEnd = timeEnd;
         this.room = room;
         this.additionalAttributes = additionalAttributes;
+    }
+
+    public String toString() {
+        return "Meeting{" +
+                "start=" + timeStart +
+                ", end=" + timeEnd +
+                ", place='" + room + '\'' +
+                ", additional=" + additionalAttributes +
+                '}';
     }
 
 }
