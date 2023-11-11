@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 @Getter
 @Setter
-public class Meeting {
+public abstract class Meeting {
     private LocalDateTime timeStart;
     private LocalDateTime timeEnd;
     private Room room;
@@ -44,4 +44,5 @@ public class Meeting {
                 '}';
     }
 
+    public abstract boolean overlapsWith(Meeting meeting);
 }
