@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -75,4 +76,25 @@ public class Meeting {
     public boolean isOnSameDay(LocalDate date) {
         return this.getTimeStart().toLocalDate().isEqual(date);
     }
+
+    public boolean hasAdditionalAttribute(HashMap<String,Object> valsToSearch) {
+
+
+        for (Map.Entry<String, Object> entry  : valsToSearch.entrySet()) {
+            String key = entry.getKey();
+            Object val = entry.getValue();
+
+            if (!getAdditionalAttributes().containsKey(key)){
+                return false;
+            }
+            else if (getAdditionalAttributes().containsKey(key)){
+                if (!getAdditionalAttributes().get(key).equals(val)){
+                    return false;
+                }
+            }
+        }
+        return true;
+
+    }
+
 }
