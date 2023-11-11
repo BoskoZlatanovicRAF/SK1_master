@@ -43,4 +43,24 @@ public class Meeting {
                 ", additional=" + additionalAttributes +
                 '}';
     }
+
+    public boolean overlapsWith(Meeting meeting){
+        if (this.equals(meeting) || (meeting.getTimeStart().isBefore(this.getTimeEnd()) &&
+                meeting.getTimeEnd().isAfter(this.getTimeStart()) && meeting.getRoom().equals(this.getRoom()))) return true;
+        return false;
+    }
+
+    public boolean equals(Object obj) {
+
+        if (obj instanceof Meeting){
+            Meeting meeting = (Meeting)obj;
+
+            return this.getTimeStart().isEqual(meeting.getTimeStart()) && this.getTimeEnd().isEqual(meeting.getTimeEnd()) &&  meeting.getRoom().equals(this.getRoom());
+        }
+        return false;
+    }
+
+    public boolean isOnSameDay(LocalDate date) {
+        return this.getTimeStart().toLocalDate().isEqual(date);
+    }
 }
