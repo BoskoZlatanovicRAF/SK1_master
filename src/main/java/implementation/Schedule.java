@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 @Getter
 public abstract class Schedule<T> {
-    LocalDateTime timeValidFrom;
-    LocalDateTime timeValidTo;
+    LocalDate timeValidFrom;
+    LocalDate timeValidTo;
     List<LocalDate> exceptions = new ArrayList<>();
     List<Meeting> meetings = new ArrayList<>();
     List<Room> rooms = new ArrayList<>();

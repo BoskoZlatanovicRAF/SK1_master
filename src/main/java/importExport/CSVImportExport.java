@@ -10,7 +10,10 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
 import java.io.*;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -47,13 +50,31 @@ public class CSVImportExport extends ScheduleImportExport {
                         break;
 
                     case "start":
+                        if(record.get(columnIndex).toString().length() < 8){
+                            LocalDate localDate = LocalDate.of(1000, 1, 1);
+                            LocalTime localTime = LocalTime.parse(record.get(columnIndex));
+                            LocalDateTime startDateTime= LocalDateTime.of(localDate, localTime);
+                            meeting.setTimeStart(startDateTime);
+                            break;
+                        }
                         LocalDateTime startDateTime = LocalDateTime.parse(record.get(columnIndex), formatter);
                         meeting.setTimeStart(startDateTime);
                         break;
 
                     case "end":
+                        if(record.get(columnIndex).toString().length() < 8){
+                            LocalDate localDate = LocalDate.of(1000, 1, 1);
+                            LocalTime localTime = LocalTime.parse(record.get(columnIndex));
+                            LocalDateTime endDateTime= LocalDateTime.of(localDate, localTime);
+                            meeting.setTimeEnd(endDateTime);
+                            break;
+                        }
                         LocalDateTime endDateTime = LocalDateTime.parse(record.get(columnIndex), formatter);
                         meeting.setTimeEnd(endDateTime);
+                        break;
+                    case "day":
+                        DayOfWeek dayOfWeek = DayOfWeek.valueOf(record.get(columnIndex));
+                        meeting.setDayOfWeek(dayOfWeek);
                         break;
                     case "additional":
                         meeting.getAdditionalAttributes().put(columnName, record.get(columnIndex));
