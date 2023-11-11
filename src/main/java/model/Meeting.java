@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 @Getter
 @Setter
-public abstract class Meeting {
+public class Meeting {
     private LocalDateTime timeStart;
     private LocalDateTime timeEnd;
     private Room room;
