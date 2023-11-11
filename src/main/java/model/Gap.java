@@ -17,7 +17,7 @@ public class Gap {
     public Gap(LocalDateTime startTime, LocalDateTime endTime, Room room) {
         this.startTime = startTime;
         this.endTime = endTime;
-
+        rooms.add(room);
     }
 
     @Override
