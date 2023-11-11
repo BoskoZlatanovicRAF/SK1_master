@@ -3,6 +3,7 @@ package model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -16,10 +17,19 @@ public class Meeting {
     private Room room;
     private HashMap<String, String> additionalAttributes;
 
+    private DayOfWeek dayOfWeek;
+
     public Meeting(){
         this.additionalAttributes = new HashMap<>();
     }
 
+    public Meeting(LocalDateTime timeStart, LocalDateTime timeEnd, Room room, HashMap<String, String> additionalAttributes, DayOfWeek dayOfWeek) {
+        this.timeStart = timeStart;
+        this.timeEnd = timeEnd;
+        this.room = room;
+        this.additionalAttributes = additionalAttributes;
+        this.dayOfWeek = dayOfWeek;
+    }
 
     public Meeting(LocalDateTime timeStart, LocalDateTime timeEnd, Room room) {
         this.timeStart = timeStart;
@@ -35,12 +45,14 @@ public class Meeting {
         this.additionalAttributes = additionalAttributes;
     }
 
+    @Override
     public String toString() {
         return "Meeting{" +
-                "start=" + timeStart +
-                ", end=" + timeEnd +
-                ", place='" + room + '\'' +
-                ", additional=" + additionalAttributes +
+                "timeStart=" + timeStart +
+                ", timeEnd=" + timeEnd +
+                ", room=" + room +
+                ", additionalAttributes=" + additionalAttributes +
+                ", dayOfWeek=" + dayOfWeek +
                 '}';
     }
 

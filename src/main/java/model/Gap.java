@@ -1,6 +1,7 @@
 package model;
 
 import lombok.Getter;
+import lombok.Setter;
 import model.Room;
 
 import java.time.LocalDateTime;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 public class Gap {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
