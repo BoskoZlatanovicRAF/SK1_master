@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @Getter
 @Setter
 public class Room {
@@ -36,9 +39,9 @@ public class Room {
 
     @Override
     public String toString() {
-        return "Room{" +
-                "name='" + name + '\'' +
-                ", features=" + features +
-                '}';
+        String featuresStr = features.entrySet().stream()
+                .map(entry -> entry.getKey() + ": " + entry.getValue())
+                .collect(Collectors.joining(", "));
+        return "Room[name=" + name + ", features={" + featuresStr + "}]";
     }
 }

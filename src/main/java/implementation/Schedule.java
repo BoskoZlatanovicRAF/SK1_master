@@ -18,8 +18,6 @@ public abstract class Schedule<T> {
     List<Meeting> meetings = new ArrayList<>();
     List<Room> rooms = new ArrayList<>();
 
-
-
     public abstract T initSchedule();
 
     public T addRoom(Room room){
@@ -39,6 +37,6 @@ public abstract class Schedule<T> {
     public abstract T filterMeetings(LocalDateTime timeStart);
 
 
-    public abstract T rescheduleMeeting(Meeting meeting); //premeštanje termina - brisanje i dodavanje novog termina sa istim vezanim podacima
+    public abstract T rescheduleMeeting(Meeting meeting, LocalDateTime startTime, LocalDateTime endTime); //premeštanje termina - brisanje i dodavanje novog termina sa istim vezanim podacima
 
 }
