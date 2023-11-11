@@ -43,6 +43,4 @@ public abstract class Meeting {
                 ", additional=" + additionalAttributes +
                 '}';
     }
-
-    public abstract boolean overlapsWith(Meeting meeting);
 }
