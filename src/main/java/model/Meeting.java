@@ -77,6 +77,18 @@ public class Meeting {
         return this.getTimeStart().toLocalDate().isEqual(date);
     }
 
+
+    public boolean inDateRange(LocalDate start, LocalDate end){
+
+        return ((this.getTimeStart().toLocalDate().isEqual(start) || this.getTimeStart().toLocalDate().isAfter(start)) && (this.getTimeEnd().toLocalDate().isEqual(end) || this.getTimeEnd().toLocalDate().isAfter(end)));
+    }
+
+    public boolean inDateRange(LocalDateTime start, LocalDateTime end){
+
+        return ((this.getTimeStart().isEqual(start) || this.getTimeStart().isAfter(start)) && (this.getTimeEnd().isEqual(end) || this.getTimeEnd().isAfter(end)));
+    }
+
+
     public boolean hasAdditionalAttribute(HashMap<String,Object> valsToSearch) {
 
 
