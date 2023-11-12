@@ -25,6 +25,7 @@ public class Room {
     public Room(String name, HashMap<String, String> features) {
         this.name = name;
         this.features = features;
+
     }
 
     public boolean addFeature(String key, String value){
@@ -43,5 +44,14 @@ public class Room {
                 .map(entry -> entry.getKey() + ": " + entry.getValue())
                 .collect(Collectors.joining(", "));
         return "Room[name=" + name + ", features={" + featuresStr + "}]";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (obj instanceof Room){
+            return this.getName().equals(((Room)obj).getName());
+        }
+        return false;
     }
 }

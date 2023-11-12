@@ -3,13 +3,12 @@ package model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -19,10 +18,19 @@ public class Meeting {
     private Room room;
     private HashMap<String, String> additionalAttributes;
 
+    private DayOfWeek dayOfWeek;
+
     public Meeting(){
         this.additionalAttributes = new HashMap<>();
     }
 
+    public Meeting(LocalDateTime timeStart, LocalDateTime timeEnd, Room room, HashMap<String, String> additionalAttributes, DayOfWeek dayOfWeek) {
+        this.timeStart = timeStart;
+        this.timeEnd = timeEnd;
+        this.room = room;
+        this.additionalAttributes = additionalAttributes;
+        this.dayOfWeek = dayOfWeek;
+    }
 
     public Meeting(LocalDateTime timeStart, LocalDateTime timeEnd, Room room) {
         this.timeStart = timeStart;
@@ -38,20 +46,73 @@ public class Meeting {
         this.additionalAttributes = additionalAttributes;
     }
 
+    @Override
     public String toString() {
-        String startTimeStr = timeStart != null ? timeStart.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) : "Not Set";
-        String endTimeStr = timeEnd != null ? timeEnd.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) : "Not Set";
-        String roomStr = room != null ? room.toString() : "No Room Assigned";
-        String additionalAttributesStr = additionalAttributes != null && !additionalAttributes.isEmpty()
-                ? additionalAttributes.entrySet().stream()
-                .map(entry -> entry.getKey() + ": " + entry.getValue())
-                .collect(Collectors.joining(", "))
-                : "No Additional Attributes";
+        return "Meeting{" +
+                "timeStart=" + timeStart +
+                ", timeEnd=" + timeEnd +
+                ", room=" + room +
+                ", additionalAttributes=" + additionalAttributes +
+                ", dayOfWeek=" + dayOfWeek +
+                '}';
+    }
 
-        return "Meeting[start=" + startTimeStr +
-                ", end=" + endTimeStr +
-                ", place=" + roomStr +
-                ", additional=[" + additionalAttributesStr + "]]";
+    public boolean overlapsWith(Meeting meeting){
+        if (this.equals(meeting) || (meeting.getTimeStart().isBefore(this.getTimeEnd()) &&
+                meeting.getTimeEnd().isAfter(this.getTimeStart()) && meeting.getRoom().equals(this.getRoom()))) return true;
+        return false;
+    }
+
+    public boolean equals(Object obj) {
+
+        if (obj instanceof Meeting){
+            Meeting meeting = (Meeting)obj;
+
+            return this.getTimeStart().isEqual(meeting.getTimeStart()) && this.getTimeEnd().isEqual(meeting.getTimeEnd()) &&  meeting.getRoom().equals(this.getRoom());
+        }
+        return false;
+    }
+
+    public boolean isOnSameDay(LocalDate date) {
+        return this.getTimeStart().toLocalDate().isEqual(date);
+    }
+
+
+    public boolean inDateRange(LocalDate start, LocalDate end){
+
+        return ((this.getTimeStart().toLocalDate().isEqual(start) || this.getTimeStart().toLocalDate().isAfter(start)) && (this.getTimeEnd().toLocalDate().isEqual(end) || this.getTimeEnd().toLocalDate().isAfter(end)));
+    }
+
+    public boolean inDateRange(LocalDateTime start, LocalDateTime end){
+
+        return ((this.getTimeStart().isEqual(start) || this.getTimeStart().isAfter(start)) && (this.getTimeEnd().isEqual(end) || this.getTimeEnd().isAfter(end)));
+    }
+
+
+    public boolean hasAdditionalAttribute(HashMap<String,Object> valsToSearch,String type) {
+
+        HashMap<String,String> attributes = null;
+        if (type.equals("room")){
+            attributes = this.getRoom().getFeatures();
+        }
+        else {
+            attributes = this.getAdditionalAttributes();
+        }
+        for (Map.Entry<String, Object> entry  : valsToSearch.entrySet()) {
+            String key = entry.getKey();
+            Object val = entry.getValue();
+
+            if (!attributes.containsKey(key)){
+                return false;
+            }
+            else if (attributes.containsKey(key)){
+                if (!attributes.get(key).equals(val)){
+                    return false;
+                }
+            }
+        }
+        return true;
+
     }
 
 }
