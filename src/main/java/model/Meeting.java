@@ -89,18 +89,24 @@ public class Meeting {
     }
 
 
-    public boolean hasAdditionalAttribute(HashMap<String,Object> valsToSearch) {
+    public boolean hasAdditionalAttribute(HashMap<String,Object> valsToSearch,String type) {
 
-
+        HashMap<String,String> attributes = null;
+        if (type.equals("room")){
+            attributes = this.getRoom().getFeatures();
+        }
+        else {
+            attributes = this.getAdditionalAttributes();
+        }
         for (Map.Entry<String, Object> entry  : valsToSearch.entrySet()) {
             String key = entry.getKey();
             Object val = entry.getValue();
 
-            if (!getAdditionalAttributes().containsKey(key)){
+            if (!attributes.containsKey(key)){
                 return false;
             }
-            else if (getAdditionalAttributes().containsKey(key)){
-                if (!getAdditionalAttributes().get(key).equals(val)){
+            else if (attributes.containsKey(key)){
+                if (!attributes.get(key).equals(val)){
                     return false;
                 }
             }
