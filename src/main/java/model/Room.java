@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
@@ -25,7 +26,6 @@ public class Room {
     public Room(String name, HashMap<String, String> features) {
         this.name = name;
         this.features = features;
-
     }
 
     public boolean addFeature(String key, String value){
@@ -47,11 +47,15 @@ public class Room {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Room room = (Room) o;
+        return Objects.equals(name, room.name);
+    }
 
-        if (obj instanceof Room){
-            return this.getName().equals(((Room)obj).getName());
-        }
-        return false;
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

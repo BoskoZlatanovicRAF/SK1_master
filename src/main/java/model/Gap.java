@@ -6,18 +6,26 @@ import model.Room;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 public class Gap {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private List<Room> rooms = new ArrayList<>();
+    private Set<Room> rooms = new HashSet<>();
     public Gap(LocalDateTime startTime, LocalDateTime endTime, Room room) {
         this.startTime = startTime;
         this.endTime = endTime;
         rooms.add(room);
+    }
+
+    public Gap(LocalDateTime startTime, LocalDateTime endTime, Set<Room> rooms) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.rooms = rooms;
     }
 
     @Override

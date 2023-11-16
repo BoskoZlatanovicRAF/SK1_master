@@ -59,7 +59,7 @@ public class Meeting {
 
     public boolean overlapsWith(Meeting meeting){
         if (this.equals(meeting) || (meeting.getTimeStart().isBefore(this.getTimeEnd()) &&
-                meeting.getTimeEnd().isAfter(this.getTimeStart()) && meeting.getRoom().equals(this.getRoom()))) return true;
+                (meeting.getTimeEnd().isAfter(this.getTimeStart()) || meeting.getTimeEnd().isEqual(this.getTimeStart())) && meeting.getRoom().equals(this.getRoom()))) return true;
         return false;
     }
 

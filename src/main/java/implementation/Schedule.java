@@ -1,6 +1,7 @@
 package implementation;
 
 import lombok.Getter;
+import lombok.Setter;
 import model.Meeting;
 import model.Room;
 
@@ -11,6 +12,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 @Getter
+@Setter
 public abstract class Schedule<T> {
     LocalDate timeValidFrom;
     LocalDate timeValidTo;
