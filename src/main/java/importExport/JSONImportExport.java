@@ -1,15 +1,22 @@
 package importExport;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import implementation.ScheduleImportExport;
 import model.Meeting;
 import model.Room;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,11 +43,27 @@ public class JSONImportExport extends ScheduleImportExport {
         scheduleReader.close();
 
         for (Map<String, Object> scheduleItem : scheduleList) {
+            String startTime = (String)scheduleItem.get(mandatoryFields.get("start"));
+            String endTime = (String) scheduleItem.get(mandatoryFields.get("end"));
+            LocalDateTime timeStart = null;
+            LocalDateTime timeEnd = null;
+            if ( startTime.length() < 8){
+                LocalDate canoncal = LocalDate.of(1000, 1, 1);
+                LocalTime localStartDate = LocalTime.parse(startTime);
+                timeStart= LocalDateTime.of(canoncal, localStartDate);
+                LocalTime localEndTime = LocalTime.parse(endTime);
+                timeEnd= LocalDateTime.of(canoncal, localEndTime);
 
-            LocalDateTime timeStart = LocalDateTime.parse((String) scheduleItem.get(mandatoryFields.get("start")), formatter);
-            LocalDateTime timeEnd = LocalDateTime.parse((String) scheduleItem.get(mandatoryFields.get("end")), formatter);
+            }
+            else {
+                timeStart = LocalDateTime.parse((String) scheduleItem.get(mandatoryFields.get("start")), formatter);
+                timeEnd = LocalDateTime.parse((String) scheduleItem.get(mandatoryFields.get("end")), formatter);
+            }
+
             Room room = new Room((String) scheduleItem.get(mandatoryFields.get("place")));
-
+            String  str = mandatoryFields.get("DayOfWeek").toString();
+            String val = (String) scheduleItem.get(str);
+            DayOfWeek dayOfWeek = DayOfWeek.valueOf(val.toUpperCase());
             HashMap<String, String> additionalAttributes = new HashMap<>();
             for (Map.Entry<String, Object> entry : scheduleItem.entrySet()) {
                 if (!mandatoryFields.containsValue(entry.getKey())) {
@@ -52,6 +75,7 @@ public class JSONImportExport extends ScheduleImportExport {
             }
 
             Meeting meeting =  new Meeting(timeStart, timeEnd, room, additionalAttributes);
+            meeting.setDayOfWeek(dayOfWeek);
             meetings.add(meeting);
 
         }
@@ -101,44 +125,43 @@ public class JSONImportExport extends ScheduleImportExport {
 
     @Override
     public boolean exportData(String filepath, List<Meeting> meetings) throws IOException{
-//
-//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//        JsonArray meetingsArray = new JsonArray();
-//
-//        for (Meeting meeting : WeeklySchedule.getInstance().getMeetings()) {
-//            JsonObject meetingJson = new JsonObject();
-//            meetingJson.addProperty("room", meeting.getRoom().getName()); // Assuming there's a method to get the room name
-//            meetingJson.addProperty("time_start", meeting.getTimeStart().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-//            meetingJson.addProperty("time_end", meeting.getTimeEnd().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-//
-//            JsonObject additionalAttributes = new JsonObject();
-//
-//            for (Map.Entry<String, String> entry : meeting.getAdditionalAttributes().entrySet()) {
-//                additionalAttributes.addProperty(entry.getKey(), entry.getValue());
-//            }
-//            meetingJson.add("additional_attributes", additionalAttributes);
-//
-//            JsonObject roomFeatures = new JsonObject();
-//            for (Map.Entry<String, String> entry : meeting.getRoom().getFeatures().entrySet()) {
-//                roomFeatures.addProperty(entry.getKey(), entry.getValue());
-//            }
 
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonArray meetingsArray = new JsonArray();
 
-//
-//            meetingJson.add("room", roomFeatures);
-//
-//            meetingsArray.add(meetingJson);
-//        }
-//        String json = gson.toJson(meetingsArray);
-//
-//        try (FileWriter fileWriter = new FileWriter(filepath)) {
-//            fileWriter.write(json);
-//        }
-//        return true;
+        for (Meeting meeting : meetings) {
+            JsonObject meetingJson = new JsonObject();
+            //meetingJson.addProperty("room", meeting.getRoom().getName()); // Assuming there's a method to get the room name
+            meetingJson.addProperty("start", meeting.getTimeStart().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            meetingJson.addProperty("end", meeting.getTimeEnd().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            meetingJson.addProperty("DayOfWeek", meeting.getDayOfWeek().toString());
+            JsonObject additionalAttributes = new JsonObject();
 
-        for(Meeting meeting : meetings){
-            System.out.println(meeting.toString());
+            for (Map.Entry<String, String> entry : meeting.getAdditionalAttributes().entrySet()) {
+                additionalAttributes.addProperty(entry.getKey(), entry.getValue());
+            }
+            meetingJson.add("additional_attributes", additionalAttributes);
+
+            JsonObject roomFeatures = new JsonObject();
+            for (Map.Entry<String, String> entry : meeting.getRoom().getFeatures().entrySet()) {
+                roomFeatures.addProperty(entry.getKey(), entry.getValue());
+            }
+
+            meetingJson.addProperty("room_name", meeting.getRoom().getName());
+
+// If roomFeatures is already a JsonObject, add it directly:
+            meetingJson.add("room_features", roomFeatures);
+            meetingsArray.add(meetingJson);
         }
+        String json = gson.toJson(meetingsArray);
+
+        try (FileWriter fileWriter = new FileWriter(filepath)) {
+            fileWriter.write(json);
+        }
+//
+//        for(Meeting meeting : meetings){
+//            System.out.println(meeting.toString());
+//        }
         return true;
     }
     //        // Get the list of meetings from the weekly schedule

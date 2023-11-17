@@ -1,8 +1,9 @@
 {
   "mandatoryFields": {
-    "place": "Classroom",
-    "start": "Start",
-    "end": "End",
-    "room": "Computer"
+    "place": "Ucionica",
+    "start": "Pocetak",
+    "end": "Kraj",
+    "room": "Racunar",
+    "DayOfWeek": "DayOfWeek"
   }
 }
