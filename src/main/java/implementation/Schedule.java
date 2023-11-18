@@ -36,7 +36,7 @@ public abstract class Schedule<T> {
 
     public abstract T filterMeetings(DayOfWeek dayOfWeek, LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd);
 
-    public abstract T filterMeetings(LocalDateTime timeStart);
+    public abstract T filterMeetings(LocalDateTime timeStart, String type);
 
 
     public abstract T rescheduleMeeting(Meeting meeting, LocalDateTime startTime, LocalDateTime endTime); //premeštanje termina - brisanje i dodavanje novog termina sa istim vezanim podacima
