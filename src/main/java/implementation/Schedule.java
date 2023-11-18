@@ -2,6 +2,7 @@ package implementation;
 
 import lombok.Getter;
 import lombok.Setter;
+import model.Gap;
 import model.Meeting;
 import model.Room;
 
@@ -34,9 +35,12 @@ public abstract class Schedule<T> {
 
     public abstract T filterMeetings(Object... params);
 
-    public abstract T filterMeetings(DayOfWeek dayOfWeek, LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd);
+    public abstract Gap filterMeetingsGaps(DayOfWeek dayOfWeek, LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd);
+    public abstract Meeting filterMeetings(DayOfWeek dayOfWeek, LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd);
 
-    public abstract T filterMeetings(LocalDateTime timeStart, String type);
+    public abstract Gap filterMeetingsGaps(LocalDateTime timeStart);
+    public abstract Meeting filterMeetings(LocalDateTime timeStart);
+
 
 
     public abstract T rescheduleMeeting(Meeting meeting, LocalDateTime startTime, LocalDateTime endTime); //premeštanje termina - brisanje i dodavanje novog termina sa istim vezanim podacima
