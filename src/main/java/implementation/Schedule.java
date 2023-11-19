@@ -36,6 +36,8 @@ public abstract class Schedule<T> {
     public abstract boolean addMeeting(Meeting meeting);
 
 
+    public abstract boolean removeMeeting(Meeting meeting); // maybe change Meeting to the date time span and room or not ??
+
 
     public List<Meeting> filterMeetingByParameters(HashMap<String,Object> additionalAttributes,String type){
 
