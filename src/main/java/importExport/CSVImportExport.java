@@ -73,7 +73,7 @@ public class CSVImportExport extends ScheduleImportExport {
                         meeting.setTimeEnd(endDateTime);
                         break;
                     case "day":
-                        DayOfWeek dayOfWeek = DayOfWeek.valueOf(record.get(columnIndex));
+                        DayOfWeek dayOfWeek = DayOfWeek.valueOf(record.get(columnIndex).toUpperCase());
                         meeting.setDayOfWeek(dayOfWeek);
                         break;
                     case "additional":
@@ -96,7 +96,7 @@ public class CSVImportExport extends ScheduleImportExport {
     }
 
 
-    private static List<ConfigMapping> readConfig(String configPath) throws FileNotFoundException {
+    public static List<ConfigMapping> readConfig(String configPath) throws FileNotFoundException {
 
             List<ConfigMapping> mappings = new ArrayList<>();
 
@@ -119,12 +119,40 @@ public class CSVImportExport extends ScheduleImportExport {
         FileWriter fileWriter = new FileWriter(filepath);
         CSVPrinter csvPrinter = new CSVPrinter(fileWriter, CSVFormat.DEFAULT);
 
-        for(Meeting meeting: meetings){
-            csvPrinter.printRecord(meeting.getTimeEnd(), meeting.getTimeEnd(), meeting.getRoom(), meeting.getAdditionalAttributes());
+        List<ConfigMapping> columnMappings = readConfig("C:\\Users\\User\\IdeaProjects\\SK1_master\\src\\main\\resources\\config.txt");
+        Map<Integer, String> mappings = new HashMap<>();
+
+        for(ConfigMapping configMapping : columnMappings) {
+            mappings.put(configMapping.getIndex(), configMapping.getOriginal());
         }
 
-        fileWriter.close();
+        List<Object> header = new ArrayList<>();
+        for(ConfigMapping configMapping : columnMappings) {
+            header.add(configMapping.getCustom());
+        }
+        header.remove(0);
+        csvPrinter.printRecord(header);
+
+        for(Meeting meeting: meetings){
+            List<Object> upis = new ArrayList<>();
+
+            upis.add(meeting.getTimeStart());
+            upis.add(meeting.getTimeEnd());
+            upis.add(meeting.getRoom().getName());
+            upis.add(meeting.getDayOfWeek());
+
+            for(String val: meeting.getAdditionalAttributes().values()){
+                upis.add(val);
+            }
+            for(String val: meeting.getRoom().getFeatures().values()){
+                upis.add(val);
+            }
+
+            csvPrinter.printRecord(upis);
+        }
+
         csvPrinter.close();
+        fileWriter.close();
         return true;
     }
 }

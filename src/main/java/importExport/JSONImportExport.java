@@ -84,42 +84,6 @@ public class JSONImportExport extends ScheduleImportExport {
         }
         return meetings;
 
-//        Gson gson = new Gson();
-//
-//        // Read and parse config.json
-//        JsonObject configJson = gson.fromJson(new FileReader(configPath), JsonObject.class);
-//        JsonObject mandatoryFields = configJson.getAsJsonObject("mandatoryFields");
-//
-//        // Read and parse schedule.json
-//        JsonArray jsonArray = gson.fromJson(new FileReader(filePath), JsonArray.class);
-//
-//        for (JsonElement jsonElement : jsonArray) {
-//            JsonObject jsonItem = jsonElement.getAsJsonObject();
-//
-//            MeetingImpl2 meetingImpl2 = new MeetingImpl2();
-//
-//            Room room = new RoomImpl2(jsonItem.get(mandatoryFields.get("place").getAsString()).getAsString(), null);
-//            LocalDateTime timeStart = LocalDateTime.parse(jsonItem.get(mandatoryFields.get("start").getAsString()).getAsString(), formatter);
-//            LocalDateTime timeEnd = LocalDateTime.parse(jsonItem.get(mandatoryFields.get("end").getAsString()).getAsString(), formatter);
-//
-//            for (Map.Entry<String, JsonElement> entry : jsonItem.entrySet()) {
-//                // If the entry is not a mandatory field, add it to additional attributes
-//                if (!mandatoryFields.has(entry.getKey())) {
-//                    meetingImpl2.getAdditionalAttributes().put(entry.getKey(), entry.getValue().getAsString());
-//                }
-//                if(mandatoryFields.get("room").equals(entry.getKey())){
-//                    room.getFeatures().put(entry.getKey(), entry.getValue().getAsString());
-//                }
-//            }
-//            meetingImpl2.setTimeStart(timeStart);
-//            meetingImpl2.setTimeEnd(timeEnd);
-//            meetingImpl2.setRoom(room);
-//            WeeklySchedule.getInstance().addMeeting(meetingImpl2);
-//        }
-//
-//        // If everything went well, return true
-//        return true;
-
     }
 
 
@@ -149,7 +113,7 @@ public class JSONImportExport extends ScheduleImportExport {
 
             meetingJson.addProperty("room_name", meeting.getRoom().getName());
 
-// If roomFeatures is already a JsonObject, add it directly:
+            // If roomFeatures is already a JsonObject, add it directly:
             meetingJson.add("room_features", roomFeatures);
             meetingsArray.add(meetingJson);
         }
@@ -158,27 +122,9 @@ public class JSONImportExport extends ScheduleImportExport {
         try (FileWriter fileWriter = new FileWriter(filepath)) {
             fileWriter.write(json);
         }
-//
-//        for(Meeting meeting : meetings){
-//            System.out.println(meeting.toString());
-//        }
+
         return true;
     }
-    //        // Get the list of meetings from the weekly schedule
-//
-//
-//        // Create a Gson instance with pretty printing for better readability
-//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-//
-//        // Convert the list of meetings to JSON
-//        String json = gson.toJson(WeeklySchedule.getInstance().getMeetings());
-//
-//        // Write the JSON string to the specified file
-//        try (FileWriter fileWriter = new FileWriter(filepath)) {
-//            fileWriter.write(json);
-//        } // try-with-resources will auto close the FileWriter
-//
-//        // If everything went well, return true
-//        return true;
+
 
 }
