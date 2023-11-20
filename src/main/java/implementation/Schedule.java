@@ -33,9 +33,7 @@ public abstract class Schedule<T> {
         return null;
     }
 
-    public abstract boolean addMeeting(LocalDateTime startDate, LocalDateTime endDate, String roomName);
-    public abstract boolean addMeeting(LocalDateTime startDate, LocalDateTime endDate, String roomName, HashMap<String, Object> additionalAttributes);
-
+    public abstract boolean addMeeting(Meeting meeting);
 
     public List<Meeting> filterMeetingByParameters(HashMap<String,Object> additionalAttributes,String type){
 
@@ -56,12 +54,17 @@ public abstract class Schedule<T> {
     public abstract List<Gap> filterMeetingsGaps(LocalDate timeStart);
     public abstract List<Meeting> filterMeetings(LocalDate timeStart);
 
+    public abstract boolean importSchedule(String type);
+    public abstract boolean importSchedule(String configPath, String FilePath, String type);
+
+    public abstract boolean exportSchedule(String filePath, String type);
+
     public abstract List<Meeting> filterMeetingsByDateRange(LocalDate startDate, LocalDate endDate);
 
     public abstract boolean rescheduleMeeting(Meeting meeting, LocalDateTime startTime, LocalDateTime endTime); //premeštanje termina - brisanje i dodavanje novog termina sa istim vezanim podacima
     public abstract boolean rescheduleMeeting(LocalDateTime oldStartTime, LocalDateTime oldEndTime, String roomName, LocalDateTime startTime, LocalDateTime endTime);
 
-    private List<Gap> findGaps(Map<Room, List<Meeting>> groupedByRoom,LocalTime startTime,LocalTime finalEndTime) {
+    protected List<Gap> findGaps(Map<Room, List<Meeting>> groupedByRoom,LocalTime startTime,LocalTime finalEndTime) {
         List<Gap> gaps = new ArrayList<>();
 
 
