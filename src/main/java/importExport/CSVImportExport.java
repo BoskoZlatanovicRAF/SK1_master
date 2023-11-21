@@ -88,10 +88,7 @@ public class CSVImportExport extends ScheduleImportExport {
 
 
         }
-        for(Meeting meeting : meetings) {
-            System.out.println(meeting.toString());
-        }
-        System.out.println("----------------------------");
+
         return meetings;
     }
 

@@ -79,9 +79,7 @@ public class JSONImportExport extends ScheduleImportExport {
             meetings.add(meeting);
 
         }
-        for(Meeting meeting : meetings) {
-            System.out.println(meeting.toString());
-        }
+
         return meetings;
 
     }
