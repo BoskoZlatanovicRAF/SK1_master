@@ -39,4 +39,13 @@ public class Gap {
         }
         else return false;
     }
+
+    @Override
+    public String toString() {
+        return "Gap{" +
+                "startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", rooms=" + rooms +
+                '}';
+    }
 }
