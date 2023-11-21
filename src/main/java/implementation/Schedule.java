@@ -24,7 +24,7 @@ public abstract class Schedule<T> {
     private LocalTime scheduleTimeStart = LocalTime.of(9,0);
     private LocalTime scheduleTImeEnd = LocalTime.of(21,0);
 
-    public abstract T initSchedule();
+
 
     public T addRoom(Room room){
         if(!rooms.contains(room)){
@@ -47,22 +47,21 @@ public abstract class Schedule<T> {
                 .collect(Collectors.toList());
     }
 
-
+    public abstract T innitSchedule();
     public abstract List<Gap> filterMeetingsGapsByTimeSpan(DayOfWeek dayOfWeek, LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd);
     public abstract List<Meeting> filterMeetingsByTimeSpan(DayOfWeek dayOfWeek, LocalDate dateStart, LocalDate dateEnd, LocalTime timeStart, LocalTime timeEnd);
 
     public abstract List<Gap> filterMeetingsGaps(LocalDate timeStart);
     public abstract List<Meeting> filterMeetings(LocalDate timeStart);
 
-    public abstract boolean importSchedule(String type);
+    public abstract boolean importSchedule(String fileDest,String type);
     public abstract boolean importSchedule(String configPath, String FilePath, String type);
 
     public abstract boolean exportSchedule(String filePath, String type);
 
-    public abstract List<Meeting> filterMeetingsByDateRange(LocalDate startDate, LocalDate endDate);
+    public abstract boolean rescheduleMeeting(Meeting meeting, LocalDateTime startTime, LocalDateTime endTime,DayOfWeek dayOfWeek); //premeštanje termina - brisanje i dodavanje novog termina sa istim vezanim podacima
+    public abstract boolean rescheduleMeeting(LocalDateTime oldStartTime, LocalDateTime oldEndTime, String roomName, LocalDateTime startTime, LocalDateTime endTime,DayOfWeek dayOfWeek);
 
-    public abstract boolean rescheduleMeeting(Meeting meeting, LocalDateTime startTime, LocalDateTime endTime); //premeštanje termina - brisanje i dodavanje novog termina sa istim vezanim podacima
-    public abstract boolean rescheduleMeeting(LocalDateTime oldStartTime, LocalDateTime oldEndTime, String roomName, LocalDateTime startTime, LocalDateTime endTime);
 
     protected List<Gap> findGaps(Map<Room, List<Meeting>> groupedByRoom,LocalTime startTime,LocalTime finalEndTime) {
         List<Gap> gaps = new ArrayList<>();
